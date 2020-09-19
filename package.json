@@ -1,0 +1,62 @@
+{
+  "name": "next-merge-props",
+  "author": "Frank Cooke",
+  "description": "Compose and merge the resulting props object from Next.js getServerSideProps/getStaticProps",
+  "keywords": [
+    "next.js",
+    "ssr",
+    "ssg",
+    "ramda"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platypusrex/merge-next-props.git"
+  },
+  "bugs": {
+    "url": "https://github.com/platypusrex/merge-next-props/issues"
+  },
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/next-merge-props.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --coverage",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@types/next": "^9.0.0",
+    "@types/ramda": "^0.27.17",
+    "babel-jest": "^26.3.0",
+    "husky": "^4.3.0",
+    "jest-fetch-mock": "^3.0.3",
+    "tsdx": "^0.13.3",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "ramda": "^0.27.1"
+  }
+}
