@@ -12,7 +12,7 @@ global.console = {
   warn: jest.fn(),
 }
 
-describe('blah', () => {
+describe('merge props', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
