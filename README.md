@@ -105,7 +105,7 @@ export const getServerSideProps = mergeProps<IndexPageProps>(
 
 export default IndexPage;
 ```
-####Using `getStaticProps`<br/>
+#### Using `getStaticProps`
 ```typescript
 // getStaticFooProps.ts
 
