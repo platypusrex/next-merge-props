@@ -1,4 +1,4 @@
-import { juxt } from 'ramda';
+import juxt from 'ramda.juxt';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { intersectObject, logPropertyIntersection } from './utils';
 import { PageProps } from './types';
@@ -11,11 +11,12 @@ export const mergeProps = <P = PageProps>(...args: any[]) => (
   ).then(result =>
     result.reduce((acc, curr) => {
       const intersection = intersectObject(acc.props, curr.props);
-      if (Object.keys(intersection).length) logPropertyIntersection(intersection);
+      if (Object.keys(intersection).length)
+        logPropertyIntersection(intersection);
       return {
         ...acc,
         props: { ...acc.props, ...curr.props },
       };
-    }),
+    })
   );
 };

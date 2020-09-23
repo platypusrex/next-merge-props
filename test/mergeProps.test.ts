@@ -1,16 +1,16 @@
 import fetch from 'jest-fetch-mock';
-import { sampleUserData } from '../example/utils/sample-data';
+import { sampleUserData } from '../next-example/utils/sample-data';
 import { mergeProps } from '../src';
 import {
   getServerSideBarProps,
   getServerSideFooProps,
-  getServerSideUserProps
+  getServerSideUserProps,
 } from './utils';
 
 // @ts-ignore
 global.console = {
   warn: jest.fn(),
-}
+};
 
 describe('merge props', () => {
   beforeEach(() => {
@@ -18,16 +18,14 @@ describe('merge props', () => {
   });
 
   it('should merge object properties', async () => {
-    fetch.mockResponseOnce(
-      JSON.stringify(sampleUserData)
-    );
-    const onSuccess = jest.fn()
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const onSuccess = jest.fn();
     const getServerSideProps = mergeProps(
       getServerSideFooProps,
       getServerSideBarProps,
       getServerSideUserProps({
         onSuccess,
-      }),
+      })
     );
 
     const response = await getServerSideProps({} as any);
@@ -38,34 +36,36 @@ describe('merge props', () => {
         props: {
           foo: 'foo',
           bar: 'bar',
-          users: sampleUserData
-        }
+          users: sampleUserData,
+        },
       })
     );
   });
 
   it('should warn of property intersections', async () => {
-    fetch.mockResponseOnce(
-      JSON.stringify(sampleUserData)
-    );
-    const onSuccess = jest.fn()
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const onSuccess = jest.fn();
     const getServerSideProps = mergeProps(
       getServerSideFooProps,
       getServerSideFooProps,
       getServerSideUserProps({
         onSuccess,
-      }),
+      })
     );
 
     const response = await getServerSideProps({} as any);
-    const errorMsg = `Intersection detected in: ${JSON.stringify({ foo: 'foo' }, null, 2)}`;
-    expect(global.console.warn).toHaveBeenCalledWith(errorMsg)
+    const errorMsg = `Intersection detected in: ${JSON.stringify(
+      { foo: 'foo' },
+      null,
+      2
+    )}`;
+    expect(global.console.warn).toHaveBeenCalledWith(errorMsg);
     expect(response).toEqual(
       expect.objectContaining({
         props: {
           foo: 'foo',
-          users: sampleUserData
-        }
+          users: sampleUserData,
+        },
       })
     );
   });
