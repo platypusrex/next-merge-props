@@ -1,4 +1,4 @@
-import juxt from 'ramda.juxt';
+import { juxt } from 'ramda';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { intersectObject, logPropertyIntersection } from './utils';
 import { PageProps } from './types';

@@ -1,7 +1,4 @@
-import identity from 'ramda.identity';
-import keys from 'ramda.keys';
-import pick from 'ramda.pick';
-import usewith from 'ramda.usewith';
+import { identity, keys, pick, useWith as usewith } from 'ramda';
 
 export const intersectObject = usewith(pick, [keys, identity]);
 

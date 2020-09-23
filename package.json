@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/platypusrex/merge-next-props/issues"
   },
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/next-merge-props.esm.js",
@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@types/next": "^9.0.0",
+    "@types/ramda": "^0.27.18",
     "babel-jest": "^26.3.0",
     "husky": "^4.3.0",
     "jest-fetch-mock": "^3.0.3",
@@ -57,10 +58,6 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "ramda.identity": "^0.26.1",
-    "ramda.juxt": "^0.26.1",
-    "ramda.keys": "^0.26.1",
-    "ramda.pick": "^0.26.1",
-    "ramda.usewith": "^0.25.0"
+    "ramda": "^0.27.1"
   }
 }
