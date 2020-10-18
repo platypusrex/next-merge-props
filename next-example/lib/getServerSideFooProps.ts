@@ -5,10 +5,10 @@ export interface GetServerSideFooProps {
 }
 
 interface GetServerSideFooPropsOptions {
-  onSuccess: (ctx: GetServerSidePropsContext) => void;
+  onSuccess?: (ctx: GetServerSidePropsContext) => void;
 }
 
-export const getServerSideFooProps = ({ onSuccess }: GetServerSideFooPropsOptions) =>
+export const getServerSideFooProps = ({ onSuccess }: GetServerSideFooPropsOptions = {}) =>
   async (ctx: GetServerSidePropsContext) => {
     onSuccess && onSuccess(ctx);
     return {

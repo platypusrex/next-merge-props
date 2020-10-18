@@ -6,6 +6,7 @@ import {
   getServerSideFooProps,
   getServerSideUserProps,
 } from './utils';
+import { orange } from '../src/utils';
 
 // @ts-ignore
 global.console = {
@@ -28,6 +29,7 @@ describe('merge props', () => {
       })
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
     expect(onSuccess).toHaveBeenCalledTimes(1);
     expect(onSuccess).toHaveBeenCalledWith(sampleUserData);
@@ -42,7 +44,7 @@ describe('merge props', () => {
     );
   });
 
-  it('should warn of property intersections', async () => {
+  it('should not warn of property intersections by default', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
     const onSuccess = jest.fn();
     const getServerSideProps = mergeProps(
@@ -53,8 +55,34 @@ describe('merge props', () => {
       })
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
-    const errorMsg = `Intersection detected in: ${JSON.stringify(
+    expect(global.console.warn).not.toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        props: {
+          foo: 'foo',
+          users: sampleUserData,
+        },
+      })
+    );
+  });
+
+  it('should warn of property intersections', async () => {
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const onSuccess = jest.fn();
+    const getServerSideProps = mergeProps(
+      { debug: true },
+      getServerSideFooProps,
+      getServerSideFooProps,
+      getServerSideUserProps({
+        onSuccess,
+      })
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    const errorMsg = `🟠 ${orange('Intersection detected')}: ${JSON.stringify(
       { foo: 'foo' },
       null,
       2
