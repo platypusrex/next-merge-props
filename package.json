@@ -5,8 +5,7 @@
   "keywords": [
     "next.js",
     "ssr",
-    "ssg",
-    "ramda"
+    "ssg"
   ],
   "repository": {
     "type": "git",
@@ -15,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/platypusrex/merge-next-props/issues"
   },
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/next-merge-props.esm.js",
@@ -49,15 +48,14 @@
   },
   "devDependencies": {
     "@types/next": "^9.0.0",
-    "@types/ramda": "^0.27.18",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
     "babel-jest": "^26.3.0",
+    "eslint-config-react-app": "^5.2.1",
     "husky": "^4.3.0",
     "jest-fetch-mock": "^3.0.3",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
-  },
-  "dependencies": {
-    "ramda": "^0.27.1"
   }
 }

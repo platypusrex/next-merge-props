@@ -21,6 +21,8 @@ const IndexPage: NextPage<IndexPageProps> = (props: IndexPageProps) => (
 );
 
 export const getServerSideProps = mergeProps<IndexPageProps>(
+  { debug: true, resolutionType: 'parallel' },
+  getServerSideFooProps(),
   getServerSideFooProps({
     onSuccess: (ctx) => {
       console.log('foo props success', ctx);
