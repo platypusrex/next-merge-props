@@ -20,8 +20,7 @@ const IndexPage: NextPage<IndexPageProps> = (props: IndexPageProps) => (
   </Layout>
 );
 
-export const getServerSideProps = mergeProps<IndexPageProps>(
-  { debug: true, resolutionType: 'parallel' },
+export const getServerSideProps = mergeProps<IndexPageProps>([
   getServerSideFooProps(),
   getServerSideFooProps({
     onSuccess: (ctx) => {
@@ -38,6 +37,9 @@ export const getServerSideProps = mergeProps<IndexPageProps>(
       console.log('users on success', users);
     }
   })
-);
+], {
+  resolutionType: 'parallel',
+  debug: true,
+});
 
 export default IndexPage;

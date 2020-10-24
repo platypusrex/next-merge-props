@@ -1,3 +1,4 @@
+import { getResultsFromFnsList, mergeResults } from './utils';
 import {
   AnyObject,
   Context,
@@ -5,53 +6,43 @@ import {
   PropsResult,
   ResolutionType,
 } from './types';
-import {
-  getResultsFromFnsList,
-  logPropertyIntersection,
-  shallowEqual,
-} from './utils';
 
 interface MergePropsOptions {
   resolutionType?: ResolutionType;
   debug?: boolean;
 }
 
+type MergeProps<P> = (ctx: Context) => Promise<PropsResult<P>>;
+
 const defaultOptions: Required<MergePropsOptions> = {
   resolutionType: 'sequential',
   debug: false,
 };
 
-type MergeProps = [MergePropsOptions | NextDataFunction, ...NextDataFunction[]];
+export function mergeProps<P>(...fns: NextDataFunction[]): MergeProps<P>;
+export function mergeProps<P>(
+  fns: NextDataFunction[],
+  options?: MergePropsOptions
+): MergeProps<P>;
+export function mergeProps<P = AnyObject>(
+  ...fns: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+): MergeProps<P> {
+  const isFirstArgArray = Array.isArray(fns[0]);
+  const fnsList = isFirstArgArray ? fns[0] : fns;
+  const options: Required<MergePropsOptions> = isFirstArgArray
+    ? {
+        ...defaultOptions,
+        ...fns[1],
+      }
+    : defaultOptions;
 
-export const mergeProps = <P = AnyObject>(...args: MergeProps) => async (
-  ctx: Context
-): Promise<PropsResult<P>> => {
-  const { resolutionType, debug } =
-    typeof args[0] === 'object'
-      ? {
-          ...defaultOptions,
-          ...args[0],
-        }
-      : defaultOptions;
-  const fnsList = typeof args[0] === 'object' ? args.slice(1) : args;
-  const results: PropsResult<P>[] = await getResultsFromFnsList(
-    ctx,
-    resolutionType,
-    fnsList
-  );
+  return async (ctx: Context): Promise<PropsResult<P>> => {
+    const results: PropsResult<P>[] = await getResultsFromFnsList(
+      ctx,
+      options.resolutionType,
+      fnsList
+    );
 
-  return results.reduce<PropsResult<P>>((acc, curr) => {
-    if (debug && process.env.NODE_ENV !== 'production') {
-      const intersection = shallowEqual(acc.props, curr.props);
-      if (intersection) logPropertyIntersection(intersection);
-    }
-
-    return {
-      ...acc,
-      props: {
-        ...acc.props,
-        ...curr.props,
-      },
-    };
-  }, {} as PropsResult<P>);
-};
+    return mergeResults(results, options.debug);
+  };
+}
