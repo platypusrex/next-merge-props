@@ -2,6 +2,7 @@
 
 [![npm Package](https://img.shields.io/npm/v/next-merge-props.svg)](https://www.npmjs.org/package/next-merge-props)
 [![License](https://img.shields.io/npm/l/express.svg)](https://github.com/platypusrex/next-merge-props/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/platypusrex/next-merge-props/badge.svg?branch=chore/coveralls-github-action)](https://coveralls.io/github/platypusrex/next-merge-props?branch=chore/coveralls-github-action)
 ![CI](https://github.com/platypusrex/next-merge-props/workflows/CI/badge.svg)
 
 ### Overview
