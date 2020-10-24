@@ -9,10 +9,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/platypusrex/merge-next-props.git"
+    "url": "git+https://github.com/platypusrex/next-merge-props.git"
   },
   "bugs": {
-    "url": "https://github.com/platypusrex/merge-next-props/issues"
+    "url": "https://github.com/platypusrex/next-merge-props/issues"
   },
   "version": "0.4.0",
   "license": "MIT",

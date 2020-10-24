@@ -1,7 +1,8 @@
 # next-merge-props
 
 [![npm Package](https://img.shields.io/npm/v/next-merge-props.svg)](https://www.npmjs.org/package/next-merge-props)
-[![License](https://img.shields.io/npm/l/express.svg)](https://github.com/platypusrex/merge-next-props/blob/master/LICENSE)
+[![License](https://img.shields.io/npm/l/express.svg)](https://github.com/platypusrex/next-merge-props/blob/master/LICENSE)
+![CI](https://github.com/platypusrex/next-merge-props/workflows/CI/badge.svg)
 
 ### Overview
 Prior to [Next.js](https://nextjs.org) introducing `getServerSideProps` and `getStaticProps`,
@@ -25,11 +26,11 @@ yarn add merge-next-props
 
 ##### `mergeProps(...fns) | mergeProps([fns], options)`
 Parameters can be expressed in 2 ways.
-- ...fns: ...(GetServerSideProps | GetStaticProps)[]
+- `...fns: ...(GetServerSideProps | GetStaticProps)[]`
 
 or
-- fns: (GetServerSideProps | GetStaticProps)[]
-- options?: { resolutionType: 'parallel' | 'sequential', debug: boolean }
+- `fns: (GetServerSideProps | GetStaticProps)[]`
+- `options?: { resolutionType: 'parallel' | 'sequential', debug: boolean }`
     - default options: `{ resolutionType: 'sequential', debug: false }`
     
 #### options
@@ -203,5 +204,5 @@ The resulting `prop` object:
 ### Contributors
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-### LICENSE
+## LICENSE
 MIT
