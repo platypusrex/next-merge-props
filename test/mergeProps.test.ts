@@ -18,7 +18,7 @@ describe('merge props', () => {
     fetch.resetMocks();
   });
 
-  it('should merge object properties', async () => {
+  it('should merge object properties from random number of function args', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
     const onSuccess = jest.fn();
     const getServerSideProps = mergeProps(
@@ -27,6 +27,63 @@ describe('merge props', () => {
       getServerSideUserProps({
         onSuccess,
       })
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+    expect(onSuccess).toHaveBeenCalledWith(sampleUserData);
+    expect(response).toEqual(
+      expect.objectContaining({
+        props: {
+          foo: 'foo',
+          bar: 'bar',
+          users: sampleUserData,
+        },
+      })
+    );
+  });
+
+  it('should merge object properties if first arg is an array of functions', async () => {
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const onSuccess = jest.fn();
+    const getServerSideProps = mergeProps([
+      getServerSideFooProps,
+      getServerSideBarProps,
+      getServerSideUserProps({
+        onSuccess,
+      }),
+    ]);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+    expect(onSuccess).toHaveBeenCalledWith(sampleUserData);
+    expect(response).toEqual(
+      expect.objectContaining({
+        props: {
+          foo: 'foo',
+          bar: 'bar',
+          users: sampleUserData,
+        },
+      })
+    );
+  });
+
+  it('should merge object properties if resolution type is parallel', async () => {
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const onSuccess = jest.fn();
+    const getServerSideProps = mergeProps(
+      [
+        getServerSideFooProps,
+        getServerSideBarProps,
+        getServerSideUserProps({
+          onSuccess,
+        }),
+      ],
+      {
+        resolutionType: 'parallel',
+      }
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,12 +129,16 @@ describe('merge props', () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
     const onSuccess = jest.fn();
     const getServerSideProps = mergeProps(
-      { debug: true },
-      getServerSideFooProps,
-      getServerSideFooProps,
-      getServerSideUserProps({
-        onSuccess,
-      })
+      [
+        getServerSideFooProps,
+        getServerSideFooProps,
+        getServerSideUserProps({
+          onSuccess,
+        }),
+      ],
+      {
+        debug: true,
+      }
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

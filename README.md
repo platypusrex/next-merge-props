@@ -1,6 +1,9 @@
 # next-merge-props
 
-### Motivation
+[![npm Package](https://img.shields.io/npm/v/next-merge-props.svg)](https://www.npmjs.org/package/next-merge-props)
+[![License](https://img.shields.io/npm/l/express.svg)](https://github.com/platypusrex/merge-next-props/blob/master/LICENSE)
+
+### Overview
 Prior to [Next.js](https://nextjs.org) introducing `getServerSideProps` and `getStaticProps`,
 wrapping page components using HOC's was a popular pattern that allowed you to easily grab things
 from SSR like cookies or session data using `getInitialProps` and reuse in any page. The goal of the lib 
@@ -19,7 +22,46 @@ yarn add merge-next-props
 ```
 
 ### Usage
-#### Using `getServerSideProps`
+
+##### `mergeProps(...fns) | mergeProps([fns], options)`
+Parameters can be expressed in 2 ways.
+- ...fns: ...(GetServerSideProps | GetStaticProps)[]
+
+or
+- fns: (GetServerSideProps | GetStaticProps)[]
+- options?: { resolutionType: 'parallel' | 'sequential', debug: boolean }
+    - default options: `{ resolutionType: 'sequential', debug: false }`
+    
+#### options
+`resolutionType` <br/>
+The `resolutionType` option allows you to specify how `mergeProps` resolves the promise
+returned from each data function. The default is `sequential` and will resolve each promise
+in order (left to right). If set to `parallel`, the results of each function are wrapped in
+`Promise.all` and resolved in parallel. 
+
+`debug` <br/>
+The `debug` option will log any intersections that occur during the merge. The default is 
+`false` and it will be disabled in production.    
+```typescript  
+import { mergeProps} from 'next-merge-props';
+
+const getServerSideProps(
+  getServerSideFooProps,
+  getServerSideBarProps,
+);
+
+// or with options parameter
+const getServerSideProps([
+  getServerSideFooProps,
+  getServerSideBarProps,
+], {
+  resolutionType: 'parallel',
+  debug: true,
+});
+```
+
+#### Example
+##### __note:__ example below utilizes `getServerSideProps` but can be swapped with `getStaticProps` 
 ```typescript
 // getServerSideFooProps.ts
 
@@ -72,6 +114,8 @@ export const getServerSideUserProps = ({ onSuccess }: GetServerSideUserPropsOpti
     };
   };
 ```
+
+Usage without `options`:
 ```typescript
 // pages/index.tsx
 
@@ -105,71 +149,19 @@ export const getServerSideProps = mergeProps<IndexPageProps>(
 
 export default IndexPage;
 ```
-#### Using `getStaticProps`
-```typescript
-// getStaticFooProps.ts
 
-import { GetStaticPropsContext } from 'next';
-
-export interface GetStaticFooProps {
-  foo: 'foo';
-}
-
-interface GetStaticFooPropsOptions {
-  onSuccess: (ctx: GetStaticPropsContext) => void;
-}
-
-export const getStaticFooProps = ({ onSuccess }: GetStaticFooPropsOptions) =>
-  async (ctx: GetStaticPropsContext) => {
-    onSuccess && onSuccess(ctx);
-    return {
-      props: {
-        foo: 'foo',
-      },
-    };
-  };
-```
-```typescript
-// getStaticUserProps.ts
-
-import { User } from '../interfaces';
-
-export interface GetServerSideUserProps {
-  users: User[];
-}
-
-interface GetStaticUserPropsOptions {
-  onSuccess: (users: User[]) => void;
-}
-
-export const getStaticUserProps = ({ onSuccess }: GetStaticUserPropsOptions) =>
-  async () => {
-    const res = await fetch(`http://localhost:3000/api/users`);
-    const users = await res.json();
-
-    if (users && onSuccess) {
-      onSuccess(users)
-    }
-
-    return {
-      props: {
-        users,
-      },
-      revalidate: 1
-    };
-  };
-```
+Usage with `options`:
 ```typescript
 // pages/index.tsx
 
 import { NextPage } from 'next';
 import { mergeProps } from 'next-merge-props';
-import { getStaticFooProps, GetStaticFooProps } from '../lib/getStaticFooProps';
-import { getStaticUserProps, GetStaticUserProps } from '../lib/getStaticUserProps';
+import { getServerSideFooProps, GetServerSideFooProps } from '../lib/getServerSideFooProps';
+import { getServerSideUserProps, GetServerSideUserProps } from '../lib/getServerSideUserProps';
 
 type IndexPageProps =
-  GetStaticFooProps &
-  GetStaticUserProps;
+  GetServerSideFooProps &
+  GetServerSideUserProps;
 
 const IndexPage: NextPage<IndexPageProps> = (props) => (
   <div>
@@ -177,22 +169,26 @@ const IndexPage: NextPage<IndexPageProps> = (props) => (
   </div>
 );
 
-export const getStaticProps = mergeProps<IndexPageProps>(
-  getStaticFooProps({
+export const getServerSideProps = mergeProps<IndexPageProps>([
+  getServerSideFooProps({
     onSuccess: (ctx) => {
       // ...do something with context here
     }
   }),
-  getStaticUserProps({
+  getServerSideUserProps({
     onSuccess: (users) => {
       // ...do something with the result here
     }
   })
-);
+], {
+  resolutionType: 'parallel',
+  debug: true,
+});
 
 export default IndexPage;
 ```
-The resulting prop object from both of the above would be
+
+The resulting `prop` object:
 ```typescript
 {
   foo: 'foo',
@@ -204,3 +200,8 @@ The resulting prop object from both of the above would be
   ]
 }
 ```
+### Contributors
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+### LICENSE
+MIT
