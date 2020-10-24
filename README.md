@@ -46,13 +46,13 @@ The `debug` option will log any intersections that occur during the merge. The d
 ```typescript  
 import { mergeProps} from 'next-merge-props';
 
-const getServerSideProps(
+const getServerSideProps = mergeProps(
   getServerSideFooProps,
   getServerSideBarProps,
 );
 
 // or with options parameter
-const getServerSideProps([
+const getServerSideProps = mergeProps([
   getServerSideFooProps,
   getServerSideBarProps,
 ], {
