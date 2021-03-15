@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/platypusrex/next-merge-props/issues"
   },
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/next-merge-props.esm.js",
@@ -34,7 +34,9 @@
     "lint:fix": "tsdx lint --fix",
     "prepare": "tsdx build"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "next": "10.x"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -47,13 +49,13 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@types/next": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "babel-jest": "^26.3.0",
     "eslint-config-react-app": "^5.2.1",
     "husky": "^4.3.0",
     "jest-fetch-mock": "^3.0.3",
+    "next": "^10.0.8",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
