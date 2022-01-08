@@ -24,6 +24,42 @@ export const getServerSideBarProps = async (): Promise<PropsResult<
   };
 };
 
+export const getStaticFooProps = async (): Promise<PropsResult<
+  GetServerSideFooProps
+>> => {
+  return {
+    props: {
+      foo: 'foo',
+    },
+    revalidate: 60,
+  };
+};
+
+export const getStaticBarProps = async (): Promise<PropsResult<
+  GetServerSideBarProps
+>> => {
+  return {
+    props: {
+      bar: 'bar',
+    },
+  };
+};
+
+export const getServerSideRedirectProps = async (): Promise<PropsResult> => {
+  return {
+    redirect: {
+      destination: '/',
+      permanent: false,
+    },
+  };
+};
+
+export const getServerSideNotFoundProps = async (): Promise<PropsResult> => {
+  return {
+    notFound: true,
+  };
+};
+
 export const getServerSideUserProps = ({
   onSuccess,
 }: {

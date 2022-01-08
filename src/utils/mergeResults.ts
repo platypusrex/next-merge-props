@@ -19,15 +19,13 @@ export const mergeResults = <P = AnyObject>(
   debug = false
 ): PropsResult<P> => {
   const result = results.find(
-    result => (result as NextRedirectResult).redirect
+    result =>
+      (result as NextRedirectResult).redirect ??
+      (result as NextRedirectResult).notFound
   ) as NextRedirectResult;
+
   if (result?.redirect) {
-    return {
-      redirect: result.redirect,
-      ...(result.revalidate !== undefined
-        ? { revalidate: result.revalidate }
-        : {}),
-    };
+    return { redirect: result.redirect };
   }
 
   if (result?.notFound) {
