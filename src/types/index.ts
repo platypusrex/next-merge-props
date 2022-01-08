@@ -11,7 +11,7 @@ import {
 export type AnyObject = Record<string, any>;
 export type ResolutionType = 'parallel' | 'sequential';
 export type Context = GetServerSidePropsContext | GetStaticPropsContext;
-export type PropsResult<P> =
+export type PropsResult<P = AnyObject> =
   | GetServerSidePropsResult<P>
   | GetStaticPropsResult<P>;
 export type NextDataFunction = GetServerSideProps | GetStaticProps;

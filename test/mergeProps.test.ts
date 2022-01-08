@@ -4,7 +4,11 @@ import { mergeProps } from '../src';
 import {
   getServerSideBarProps,
   getServerSideFooProps,
+  getServerSideNotFoundProps,
+  getServerSideRedirectProps,
   getServerSideUserProps,
+  getStaticBarProps,
+  getStaticFooProps,
 } from './utils';
 import { orange } from '../src/utils';
 
@@ -97,6 +101,59 @@ describe('merge props', () => {
           bar: 'bar',
           users: sampleUserData,
         },
+      })
+    );
+  });
+
+  it('should merge static object properties and return a revalidate property if provided by any static function', async () => {
+    fetch.mockResponseOnce(JSON.stringify(sampleUserData));
+    const getStaticProps = mergeProps(getStaticFooProps, getStaticBarProps);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getStaticProps({} as any);
+    expect(response).toEqual(
+      expect.objectContaining({
+        props: {
+          foo: 'foo',
+          bar: 'bar',
+        },
+        revalidate: 60,
+      })
+    );
+  });
+
+  it('should return redirect if any resulting server side/static function returns one', async () => {
+    const getServerSideProps = mergeProps(
+      getServerSideFooProps,
+      getServerSideBarProps,
+      getServerSideRedirectProps
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(response).toEqual(
+      expect.objectContaining({
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      })
+    );
+  });
+
+  it('should return notFound if any resulting server side/static function returns one', async () => {
+    const getServerSideProps = mergeProps(
+      getServerSideFooProps,
+      getServerSideBarProps,
+      getServerSideNotFoundProps,
+      getServerSideRedirectProps
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(response).toEqual(
+      expect.objectContaining({
+        notFound: true,
       })
     );
   });

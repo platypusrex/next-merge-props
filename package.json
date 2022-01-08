@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/platypusrex/next-merge-props/issues"
   },
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/next-merge-props.esm.js",
@@ -35,7 +35,7 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "next": "10.x"
+    "next": ">=10.x"
   },
   "husky": {
     "hooks": {
