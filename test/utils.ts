@@ -1,8 +1,21 @@
-import { User } from '../next-example/interfaces';
 import { PropsResult } from '../src/types';
-import { GetServerSideFooProps } from '../next-example/lib/getServerSideFooProps';
-import { GetServerSideBarProps } from '../next-example/lib/getServerSideBarProps';
-import { GetServerSideUserProps } from '../next-example/lib/getServerSideUserProps';
+
+interface User {
+  id: number;
+  name: string;
+}
+
+interface GetServerSideUserProps {
+  users: User[];
+}
+
+interface GetServerSideFooProps {
+  foo: 'foo';
+}
+
+interface GetServerSideBarProps {
+  bar: 'bar';
+}
 
 export const getServerSideFooProps = async (): Promise<PropsResult<
   GetServerSideFooProps

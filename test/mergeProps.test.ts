@@ -105,7 +105,7 @@ describe('merge props', () => {
     );
   });
 
-  it('should merge static object properties and return a revalidate property if provided by any static function', async () => {
+  it('should merge static object properties and return a revalidate property if provided', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
     const getStaticProps = mergeProps(getStaticFooProps, getStaticBarProps);
 
