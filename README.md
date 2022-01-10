@@ -15,12 +15,12 @@ functions and merge the results of each.
 ### Installation
 npm
 ```shell script
-npm install --save merge-next-props
+npm install --save next-merge-props
 ```
 
 or yarn
 ```shell script
-yarn add merge-next-props
+yarn add next-merge-props
 ```
 
 ### Usage
