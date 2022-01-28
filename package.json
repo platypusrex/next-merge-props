@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/platypusrex/next-merge-props/issues"
   },
-  "version": "0.5.2",
+  "version": "0.5.3",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/next-merge-props.esm.js",
