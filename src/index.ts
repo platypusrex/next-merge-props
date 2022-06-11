@@ -1,21 +1,17 @@
 import { getResultsFromFnsList, mergeResults } from './utils';
-import {
+import type {
   AnyObject,
   Context,
+  MergePropsOptions,
   NextDataFunction,
   PropsResult,
-  ResolutionType,
 } from './types';
-
-interface MergePropsOptions {
-  resolutionType?: ResolutionType;
-  debug?: boolean;
-}
 
 type MergeProps<P> = (ctx: Context) => Promise<PropsResult<P>>;
 
 const defaultOptions: Required<MergePropsOptions> = {
   resolutionType: 'sequential',
+  shortCircuit: 'redirect-and-notfound',
   debug: false,
 };
 
@@ -39,8 +35,8 @@ export function mergeProps<P = AnyObject>(
   return async (ctx: Context): Promise<PropsResult<P>> => {
     const results: PropsResult<P>[] = await getResultsFromFnsList(
       ctx,
-      options.resolutionType,
-      fnsList
+      fnsList,
+      options
     );
 
     return mergeResults(results, options.debug);

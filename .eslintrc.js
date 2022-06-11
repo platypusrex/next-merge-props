@@ -1,22 +1,7 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
-  ],
-  plugins: [
-    '@typescript-eslint',
-    'react',
-  ],
-  env: {
-    browser: true,
-    es6: true,
-    jest: true,
-  },
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
+  plugins: ['@typescript-eslint'],
   rules: {
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
