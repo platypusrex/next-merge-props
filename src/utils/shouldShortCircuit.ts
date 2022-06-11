@@ -3,7 +3,7 @@ import type { PropsResult, ShortCircuitType } from '../types';
 export const shouldShortCircuit = (
   result: PropsResult,
   shortCircuit?: ShortCircuitType
-) => {
+): boolean => {
   if (!shortCircuit || shortCircuit === 'never') {
     return false;
   }
