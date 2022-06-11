@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.0](https://github.com/platypusrex/next-merge-props/compare/@release/0.5.3...@release/1.0.0-alpha.0) (2022-06-11)
+
+
+### Features
+
+* adds support for short circuiting redirects and notFounds ([f7186a1](https://github.com/platypusrex/next-merge-props/commit/f7186a164b3cbc869d91dbac8cb0efca07b0d1c2))
+* log warning for attempts to use short circuiting with parallel resolution ([8b0afca](https://github.com/platypusrex/next-merge-props/commit/8b0afca95d14bdce7b2ae7c46197c6f58fd5bafb))
+* log warning for attempts to use short circuiting with parallel resolution ([13be30b](https://github.com/platypusrex/next-merge-props/commit/13be30b662398e84cc066fd62161cf9a14cedf49))
+
 ### [0.5.3](https://github.com/platypusrex/next-merge-props/compare/@release/0.5.2...@release/0.5.3) (2022-01-28)
 
 ### [0.5.2](https://github.com/platypusrex/next-merge-props/compare/@release/0.5.1...@release/0.5.2) (2022-01-09)
