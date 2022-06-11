@@ -46,8 +46,13 @@ export const getResultsFromFnsList = async <P = AnyObject>(
       if (shouldShortCircuit(result, shortCircuit)) break;
     }
   } else {
-    if ((options as AnyObject)?.shortCircuit && process.env.NODE_ENV !== 'production') {
-      console.warn(`🟠 ${orange('Short circuit is not supported for parallel resolution')}`);
+    if (
+      (options as AnyObject)?.shortCircuit &&
+      process.env.NODE_ENV !== 'production'
+    ) {
+      console.warn(
+        `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
+      );
     }
     results = await Promise.all(fns.map((fn) => fn(ctx)));
   }

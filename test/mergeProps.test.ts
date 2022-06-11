@@ -20,7 +20,7 @@ describe('merge props', () => {
   });
 
   afterEach(() => {
-    (global as AnyObject).console = {}
+    (global as AnyObject).console = {};
   });
 
   it('should merge object properties from random number of function args', async () => {
@@ -220,7 +220,9 @@ describe('merge props', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
-    expect(global.console.warn).toHaveBeenCalledWith(`🟠 ${orange('Short circuit is not supported for parallel resolution')}`);
+    expect(global.console.warn).toHaveBeenCalledWith(
+      `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
+    );
     expect(getServerSidePropsOne).toHaveBeenCalled();
     expect(getServerSidePropsTwo).toHaveBeenCalled();
     expect(response).toEqual(
