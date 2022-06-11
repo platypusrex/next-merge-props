@@ -1,6 +1,7 @@
 import fetch from 'jest-fetch-mock';
 import { orange } from '../src/utils';
 import { mergeProps } from '../src';
+import { AnyObject } from '../src/types';
 import {
   getServerSideBarProps,
   getServerSideFooProps,
@@ -12,14 +13,14 @@ import {
   sampleUserData,
 } from './utils';
 
-// @ts-ignore
-global.console = {
-  warn: jest.fn(),
-};
-
 describe('merge props', () => {
   beforeEach(() => {
+    (global as AnyObject).console = { warn: jest.fn() };
     fetch.resetMocks();
+  });
+
+  afterEach(() => {
+    (global as AnyObject).console = {}
   });
 
   it('should merge object properties from random number of function args', async () => {
@@ -219,6 +220,7 @@ describe('merge props', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
+    expect(global.console.warn).toHaveBeenCalledWith(`🟠 ${orange('Short circuit is not supported for parallel resolution')}`);
     expect(getServerSidePropsOne).toHaveBeenCalled();
     expect(getServerSidePropsTwo).toHaveBeenCalled();
     expect(response).toEqual(
