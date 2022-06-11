@@ -1,6 +1,7 @@
 import fetch from 'jest-fetch-mock';
-import { sampleUserData } from '../next-example/utils/sample-data';
+import { orange } from '../src/utils';
 import { mergeProps } from '../src';
+import { AnyObject } from '../src/types';
 import {
   getServerSideBarProps,
   getServerSideFooProps,
@@ -9,17 +10,17 @@ import {
   getServerSideUserProps,
   getStaticBarProps,
   getStaticFooProps,
+  sampleUserData,
 } from './utils';
-import { orange } from '../src/utils';
-
-// @ts-ignore
-global.console = {
-  warn: jest.fn(),
-};
 
 describe('merge props', () => {
   beforeEach(() => {
+    (global as AnyObject).console = { warn: jest.fn() };
     fetch.resetMocks();
+  });
+
+  afterEach(() => {
+    (global as AnyObject).console = {};
   });
 
   it('should merge object properties from random number of function args', async () => {
@@ -137,6 +138,96 @@ describe('merge props', () => {
           destination: '/',
           permanent: false,
         },
+      })
+    );
+  });
+
+  it('should short circuit if redirect is returned', async () => {
+    const getServerSideTestProps = jest.fn(() => ({ props: {} }));
+
+    const getServerSideProps = mergeProps(
+      getServerSideRedirectProps,
+      getServerSideTestProps
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(getServerSideTestProps).not.toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      })
+    );
+  });
+
+  it('should short circuit if notFound is returned', async () => {
+    const getServerSideTestProps = jest.fn(() => ({ props: {} }));
+
+    const getServerSideProps = mergeProps(
+      getServerSideNotFoundProps,
+      getServerSideTestProps
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(getServerSideTestProps).not.toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        notFound: true,
+      })
+    );
+  });
+
+  it('should respect the order of functions when short circuiting composed functions', async () => {
+    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+
+    const getServerSideProps = mergeProps(
+      getServerSidePropsOne,
+      getServerSideNotFoundProps,
+      getServerSideRedirectProps,
+      getServerSidePropsTwo
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(getServerSidePropsOne).toHaveBeenCalled();
+    expect(getServerSidePropsTwo).not.toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        notFound: true,
+      })
+    );
+  });
+
+  it('should not short circuit if resolutionType is parallel', async () => {
+    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+
+    const getServerSideProps = mergeProps(
+      [
+        getServerSidePropsOne,
+        getServerSideNotFoundProps,
+        getServerSidePropsTwo,
+      ],
+      {
+        resolutionType: 'parallel',
+      }
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(global.console.warn).toHaveBeenCalledWith(
+      `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
+    );
+    expect(getServerSidePropsOne).toHaveBeenCalled();
+    expect(getServerSidePropsTwo).toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        notFound: true,
       })
     );
   });

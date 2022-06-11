@@ -17,9 +17,9 @@ interface GetServerSideBarProps {
   bar: 'bar';
 }
 
-export const getServerSideFooProps = async (): Promise<PropsResult<
-  GetServerSideFooProps
->> => {
+export const getServerSideFooProps = async (): Promise<
+  PropsResult<GetServerSideFooProps>
+> => {
   return {
     props: {
       foo: 'foo',
@@ -27,9 +27,9 @@ export const getServerSideFooProps = async (): Promise<PropsResult<
   };
 };
 
-export const getServerSideBarProps = async (): Promise<PropsResult<
-  GetServerSideBarProps
->> => {
+export const getServerSideBarProps = async (): Promise<
+  PropsResult<GetServerSideBarProps>
+> => {
   return {
     props: {
       bar: 'bar',
@@ -37,9 +37,9 @@ export const getServerSideBarProps = async (): Promise<PropsResult<
   };
 };
 
-export const getStaticFooProps = async (): Promise<PropsResult<
-  GetServerSideFooProps
->> => {
+export const getStaticFooProps = async (): Promise<
+  PropsResult<GetServerSideFooProps>
+> => {
   return {
     props: {
       foo: 'foo',
@@ -48,9 +48,9 @@ export const getStaticFooProps = async (): Promise<PropsResult<
   };
 };
 
-export const getStaticBarProps = async (): Promise<PropsResult<
-  GetServerSideBarProps
->> => {
+export const getStaticBarProps = async (): Promise<
+  PropsResult<GetServerSideBarProps>
+> => {
   return {
     props: {
       bar: 'bar',
@@ -73,21 +73,26 @@ export const getServerSideNotFoundProps = async (): Promise<PropsResult> => {
   };
 };
 
-export const getServerSideUserProps = ({
-  onSuccess,
-}: {
-  onSuccess: (users: User[]) => void;
-}) => async (): Promise<PropsResult<GetServerSideUserProps>> => {
-  const res = await fetch(`http://localhost:3000/api/users`);
-  const users = await res.json();
+export const getServerSideUserProps =
+  ({ onSuccess }: { onSuccess: (users: User[]) => void }) =>
+  async (): Promise<PropsResult<GetServerSideUserProps>> => {
+    const res = await fetch(`http://localhost:3000/api/users`);
+    const users = await res.json();
 
-  if (users && onSuccess) {
-    onSuccess(users);
-  }
+    if (users && onSuccess) {
+      onSuccess(users);
+    }
 
-  return {
-    props: {
-      users,
-    },
+    return {
+      props: {
+        users,
+      },
+    };
   };
-};
+
+export const sampleUserData: User[] = [
+  { id: 101, name: 'Alice' },
+  { id: 102, name: 'Bob' },
+  { id: 103, name: 'Caroline' },
+  { id: 104, name: 'Dave' },
+];

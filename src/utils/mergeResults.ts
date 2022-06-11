@@ -1,7 +1,7 @@
-import { AnyObject, PropsResult } from '../types';
+import type { Redirect } from 'next';
+import type { AnyObject, PropsResult } from '../types';
 import { shallowEqual } from './shallowEqual';
 import { logPropertyIntersection } from './logPropertyIntersection';
-import { Redirect } from 'next';
 
 interface NextRedirectResult {
   redirect?: Redirect;
@@ -19,7 +19,7 @@ export const mergeResults = <P = AnyObject>(
   debug = false
 ): PropsResult<P> => {
   const result = results.find(
-    result =>
+    (result) =>
       (result as NextRedirectResult).redirect ??
       (result as NextRedirectResult).notFound
   ) as NextRedirectResult;

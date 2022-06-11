@@ -1,5 +1,5 @@
 import { orange } from './cliColors';
-import { AnyObject } from '../types';
+import type { AnyObject } from '../types';
 
 export const logPropertyIntersection = (intersection: AnyObject): void => {
   console.warn(
