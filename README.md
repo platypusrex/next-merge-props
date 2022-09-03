@@ -26,14 +26,31 @@ yarn add next-merge-props
 
 ### Usage
 
-##### `mergeProps(...fns) | mergeProps([fns], options)`
-Parameters can be expressed in 2 ways.
-- `...fns: ...(GetServerSideProps | GetStaticProps)[]`
+```
+mergeProps(...fns) | mergeProps([fns], options)
+```
 
+Parameters can be expressed in 2 ways.
+
+```
+...fns: ...(GetServerSideProps | GetStaticProps)[]`
+```
 or
-- `fns: (GetServerSideProps | GetStaticProps)[]`
-- `options?: { resolutionType: 'parallel' | 'sequential', debug: boolean }`
-    - default options: `{ resolutionType: 'sequential', debug: false }`
+
+```
+fns: (GetServerSideProps | GetStaticProps)[]
+options?: {
+  resolutionType: 'parallel' | 'sequential',
+  shortCircuit: 'redirect-and-notfound' | 'redirect-only' | 'notfound-only' | 'never',
+  debug: boolean
+}
+
+default options: {
+  resolutionType: 'sequential',
+  shortCircuit: 'redirect-and-notfound',
+  debug: false
+}
+```
     
 #### options
 `resolutionType` <br/>
@@ -41,6 +58,21 @@ The `resolutionType` option allows you to specify how `mergeProps` resolves the 
 returned from each data function. The default is `sequential` and will resolve each promise
 in order (left to right). If set to `parallel`, the results of each function are wrapped in
 `Promise.all` and resolved in parallel. 
+
+`shortCircuit` <br/>
+The `shortciruit` option allows you to configure the behavior of server side function execution.
+Specifically when the output of the function is either a [redirect](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#redirect)
+object or [notFound](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#notfound)
+flag as officially supported in both `getServerSideProps` and `getStaticProps`. This aforementioned behavior
+is to simply exit and return if the payload of any executed function includes either of the values above. 
+This is turned on by default for both `redirect` and `notfound`. 
+
+**Note:** This can only be configured if your using the `sequential` resolution type, which happens
+to be the default resolution type. The short-circuit can be configured in several ways.
+1. `redirect-and-notfound` 
+2. `redirect-only`
+3. `notfound-only`
+4. `never`
 
 `debug` <br/>
 The `debug` option will log any intersections that occur during the merge. The default is 
