@@ -6,14 +6,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/platypusrex/next-merge-props/badge.svg?branch=chore/coveralls-github-action)](https://coveralls.io/github/platypusrex/next-merge-props?branch=chore/coveralls-github-action)
 ![CI](https://github.com/platypusrex/next-merge-props/workflows/CI/badge.svg)
 
-### Overview
+## Overview
 Prior to [Next.js](https://nextjs.org) introducing `getServerSideProps` and `getStaticProps`,
 wrapping page components using HOC's was a popular pattern that allowed you to easily grab things
 from SSR like cookies or session data using `getInitialProps` and reuse in any page. The goal of the lib 
 is simply to aid in recreating a similar pattern, allowing you to compose any number of specialized data fetching
 functions and merge the results of each.  
 
-### Installation
+## Installation
 npm
 ```shell script
 npm install --save next-merge-props
@@ -24,25 +24,57 @@ or yarn
 yarn add next-merge-props
 ```
 
-### Usage
+## Usage
 
-##### `mergeProps(...fns) | mergeProps([fns], options)`
+```
+mergeProps(...fns) | mergeProps([fns], options)
+```
+
 Parameters can be expressed in 2 ways.
-- `...fns: ...(GetServerSideProps | GetStaticProps)[]`
 
+```
+...fns: ...(GetServerSideProps | GetStaticProps)[]`
+```
 or
-- `fns: (GetServerSideProps | GetStaticProps)[]`
-- `options?: { resolutionType: 'parallel' | 'sequential', debug: boolean }`
-    - default options: `{ resolutionType: 'sequential', debug: false }`
+
+```
+fns: (GetServerSideProps | GetStaticProps)[]
+options?: {
+  resolutionType: 'parallel' | 'sequential',
+  shortCircuit: 'redirect-and-notfound' | 'redirect-only' | 'notfound-only' | 'never',
+  debug: boolean
+}
+
+default options: {
+  resolutionType: 'sequential',
+  shortCircuit: 'redirect-and-notfound',
+  debug: false
+}
+```
     
-#### options
-`resolutionType` <br/>
+### Options:
+**resolutionType** <br/>
 The `resolutionType` option allows you to specify how `mergeProps` resolves the promise
 returned from each data function. The default is `sequential` and will resolve each promise
 in order (left to right). If set to `parallel`, the results of each function are wrapped in
 `Promise.all` and resolved in parallel. 
 
-`debug` <br/>
+**shortCircuit** <br/>
+The `shortciruit` option allows you to configure the behavior of server side function execution.
+Specifically when the output of the function is either a [redirect](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#redirect)
+object or [notFound](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#notfound)
+flag as officially supported in both `getServerSideProps` and `getStaticProps`. This aforementioned behavior
+is to simply exit and return if the payload of any executed function includes either of the values above. 
+This is turned on by default for both `redirect` and `notfound`. 
+
+Note: This can only be configured if your using the `sequential` resolution type, which happens
+to be the default resolution type. The short-circuit can be configured in several ways.
+1. `redirect-and-notfound` 
+2. `redirect-only`
+3. `notfound-only`
+4. `never`
+
+**debug** <br/>
 The `debug` option will log any intersections that occur during the merge. The default is 
 `false` and it will be disabled in production.    
 ```typescript  
@@ -59,11 +91,12 @@ const getServerSideProps = mergeProps([
   getServerSideBarProps,
 ], {
   resolutionType: 'parallel',
+  shortCircuit: 'never',
   debug: true,
 });
 ```
 
-#### Example
+### Example
 ##### __note:__ example below utilizes `getServerSideProps` but can be swapped with `getStaticProps` 
 ```typescript
 // getServerSideFooProps.ts
