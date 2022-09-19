@@ -2,7 +2,7 @@ import type { PropsResult, ShortCircuitType } from '../types';
 
 export const shouldShortCircuit = (
   result: PropsResult,
-  shortCircuit?: ShortCircuitType
+  shortCircuit: ShortCircuitType = 'redirect-and-notfound'
 ): boolean => {
   if (!shortCircuit || shortCircuit === 'never') {
     return false;

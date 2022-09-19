@@ -1,25 +1,15 @@
 import { getResultsFromFnsList, mergeResults } from './utils';
-import type {
-  AnyObject,
-  Context,
-  MergePropsOptions,
-  NextDataFunction,
-  PropsResult,
-} from './types';
+import type { AnyObject, Context, MergePropsOptions, NextDataFunction, PropsResult } from './types';
 
 type MergeProps<P> = (ctx: Context) => Promise<PropsResult<P>>;
 
-const defaultOptions: Required<MergePropsOptions> = {
+const defaultOptions: MergePropsOptions = {
   resolutionType: 'sequential',
-  shortCircuit: 'redirect-and-notfound',
   debug: false,
 };
 
 export function mergeProps<P>(...fns: NextDataFunction[]): MergeProps<P>;
-export function mergeProps<P>(
-  fns: NextDataFunction[],
-  options?: MergePropsOptions
-): MergeProps<P>;
+export function mergeProps<P>(fns: NextDataFunction[], options?: MergePropsOptions): MergeProps<P>;
 export function mergeProps<P = AnyObject>(
   ...fns: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
 ): MergeProps<P> {
@@ -33,11 +23,7 @@ export function mergeProps<P = AnyObject>(
     : defaultOptions;
 
   return async (ctx: Context): Promise<PropsResult<P>> => {
-    const results: PropsResult<P>[] = await getResultsFromFnsList(
-      ctx,
-      fnsList,
-      options
-    );
+    const results: PropsResult<P>[] = await getResultsFromFnsList(ctx, fnsList, options);
 
     return mergeResults(results, options.debug);
   };

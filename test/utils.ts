@@ -17,9 +17,7 @@ interface GetServerSideBarProps {
   bar: 'bar';
 }
 
-export const getServerSideFooProps = async (): Promise<
-  PropsResult<GetServerSideFooProps>
-> => {
+export const getServerSideFooProps = async (): Promise<PropsResult<GetServerSideFooProps>> => {
   return {
     props: {
       foo: 'foo',
@@ -27,9 +25,7 @@ export const getServerSideFooProps = async (): Promise<
   };
 };
 
-export const getServerSideBarProps = async (): Promise<
-  PropsResult<GetServerSideBarProps>
-> => {
+export const getServerSideBarProps = async (): Promise<PropsResult<GetServerSideBarProps>> => {
   return {
     props: {
       bar: 'bar',
@@ -37,9 +33,7 @@ export const getServerSideBarProps = async (): Promise<
   };
 };
 
-export const getStaticFooProps = async (): Promise<
-  PropsResult<GetServerSideFooProps>
-> => {
+export const getStaticFooProps = async (): Promise<PropsResult<GetServerSideFooProps>> => {
   return {
     props: {
       foo: 'foo',
@@ -48,9 +42,7 @@ export const getStaticFooProps = async (): Promise<
   };
 };
 
-export const getStaticBarProps = async (): Promise<
-  PropsResult<GetServerSideBarProps>
-> => {
+export const getStaticBarProps = async (): Promise<PropsResult<GetServerSideBarProps>> => {
   return {
     props: {
       bar: 'bar',

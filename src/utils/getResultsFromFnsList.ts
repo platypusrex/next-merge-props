@@ -1,5 +1,3 @@
-import { orange } from './cliColors';
-import { shouldShortCircuit } from './shouldShortCircuit';
 import type {
   AnyObject,
   Context,
@@ -7,6 +5,9 @@ import type {
   MergePropsOptionsSequential,
   PropsResult,
 } from '../types';
+import { orange } from './cliColors';
+import { shouldShortCircuit } from './shouldShortCircuit';
+import { isProd } from './isProd';
 
 export const getResultsFromFnsList = async <P = AnyObject>(
   ctx: Context,
@@ -25,13 +26,8 @@ export const getResultsFromFnsList = async <P = AnyObject>(
       if (shouldShortCircuit(result, shortCircuit)) break;
     }
   } else {
-    if (
-      (options as AnyObject)?.shortCircuit &&
-      process.env.NODE_ENV !== 'production'
-    ) {
-      console.warn(
-        `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
-      );
+    if ((options as AnyObject)?.shortCircuit && !isProd()) {
+      console.warn(`🟠 ${orange('Short circuit is not supported for parallel resolution')}`);
     }
     results = await Promise.all(fns.map((fn) => fn(ctx)));
   }
