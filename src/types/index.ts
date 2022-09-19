@@ -18,9 +18,7 @@ export type ShortCircuitType =
   | 'never';
 
 export type Context = GetServerSidePropsContext | GetStaticPropsContext;
-export type PropsResult<P = AnyObject> =
-  | GetServerSidePropsResult<P>
-  | GetStaticPropsResult<P>;
+export type PropsResult<P = AnyObject> = GetServerSidePropsResult<P> | GetStaticPropsResult<P>;
 export type NextDataFunction = GetServerSideProps | GetStaticProps;
 
 export type MergePropsOptionsSequential = {
@@ -34,6 +32,4 @@ export type MergePropsOptionsParallel = {
   debug?: boolean;
 };
 
-export type MergePropsOptions =
-  | MergePropsOptionsSequential
-  | MergePropsOptionsParallel;
+export type MergePropsOptions = MergePropsOptionsSequential | MergePropsOptionsParallel;

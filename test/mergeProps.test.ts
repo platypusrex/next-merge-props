@@ -145,10 +145,7 @@ describe('merge props', () => {
   it('should short circuit if redirect is returned', async () => {
     const getServerSideTestProps = jest.fn(() => ({ props: {} }));
 
-    const getServerSideProps = mergeProps(
-      getServerSideRedirectProps,
-      getServerSideTestProps
-    );
+    const getServerSideProps = mergeProps(getServerSideRedirectProps, getServerSideTestProps);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
@@ -166,10 +163,7 @@ describe('merge props', () => {
   it('should short circuit if notFound is returned', async () => {
     const getServerSideTestProps = jest.fn(() => ({ props: {} }));
 
-    const getServerSideProps = mergeProps(
-      getServerSideNotFoundProps,
-      getServerSideTestProps
-    );
+    const getServerSideProps = mergeProps(getServerSideNotFoundProps, getServerSideTestProps);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
@@ -208,11 +202,34 @@ describe('merge props', () => {
     const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
 
     const getServerSideProps = mergeProps(
-      [
-        getServerSidePropsOne,
-        getServerSideNotFoundProps,
-        getServerSidePropsTwo,
-      ],
+      // @ts-ignore
+      [getServerSidePropsOne, getServerSideNotFoundProps, getServerSidePropsTwo],
+      {
+        resolutionType: 'parallel',
+        shortCircuit: 'redirect-and-notfound',
+      }
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await getServerSideProps({} as any);
+    expect(global.console.warn).toHaveBeenCalledWith(
+      `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
+    );
+    expect(getServerSidePropsOne).toHaveBeenCalled();
+    expect(getServerSidePropsTwo).toHaveBeenCalled();
+    expect(response).toEqual(
+      expect.objectContaining({
+        notFound: true,
+      })
+    );
+  });
+
+  it('should not warn if short circuit is not explicitly set and resolutionType is parallel', async () => {
+    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+
+    const getServerSideProps = mergeProps(
+      [getServerSidePropsOne, getServerSideNotFoundProps, getServerSidePropsTwo],
       {
         resolutionType: 'parallel',
       }
@@ -220,7 +237,7 @@ describe('merge props', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await getServerSideProps({} as any);
-    expect(global.console.warn).toHaveBeenCalledWith(
+    expect(global.console.warn).not.toHaveBeenCalledWith(
       `🟠 ${orange('Short circuit is not supported for parallel resolution')}`
     );
     expect(getServerSidePropsOne).toHaveBeenCalled();

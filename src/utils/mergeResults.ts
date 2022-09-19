@@ -2,6 +2,7 @@ import type { Redirect } from 'next';
 import type { AnyObject, PropsResult } from '../types';
 import { shallowEqual } from './shallowEqual';
 import { logPropertyIntersection } from './logPropertyIntersection';
+import { isProd } from './isProd';
 
 interface NextRedirectResult {
   redirect?: Redirect;
@@ -19,9 +20,7 @@ export const mergeResults = <P = AnyObject>(
   debug = false
 ): PropsResult<P> => {
   const result = results.find(
-    (result) =>
-      (result as NextRedirectResult).redirect ??
-      (result as NextRedirectResult).notFound
+    (result) => (result as NextRedirectResult).redirect ?? (result as NextRedirectResult).notFound
   ) as NextRedirectResult;
 
   if (result?.redirect) {
@@ -33,7 +32,7 @@ export const mergeResults = <P = AnyObject>(
   }
 
   return (results as NextResultWithProps<P>[]).reduce((acc, curr) => {
-    if (debug && process.env.NODE_ENV !== 'production') {
+    if (debug && !isProd()) {
       const intersection = shallowEqual(acc.props, curr.props);
       if (intersection) logPropertyIntersection(intersection);
     }
