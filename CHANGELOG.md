@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/platypusrex/next-merge-props/compare/@release/1.0.0...@release/1.0.1) (2022-09-19)
+
+
+### Bug Fixes
+
+* short circuit warning for parallel resolution ([cd6ee11](https://github.com/platypusrex/next-merge-props/commit/cd6ee11e8a73b68f36f7283ca865923b223e0e49))
+
 ## [1.0.0](https://github.com/platypusrex/next-merge-props/compare/@release/1.0.0-alpha.0...@release/1.0.0) (2022-09-03)
 
 ## [1.0.0-alpha.0](https://github.com/platypusrex/next-merge-props/compare/@release/0.5.3...@release/1.0.0-alpha.0) (2022-06-11)
