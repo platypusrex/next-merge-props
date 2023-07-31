@@ -33,7 +33,7 @@ export const mergeResults = <P = AnyObject>(
 
   return (results as NextResultWithProps<P>[]).reduce((acc, curr) => {
     if (debug && !isProd()) {
-      const intersection = shallowEqual(acc.props, curr.props);
+      const intersection = shallowEqual(acc.props as any, curr.props as any);
       if (intersection) logPropertyIntersection(intersection);
     }
 

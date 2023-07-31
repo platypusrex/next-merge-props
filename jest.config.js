@@ -1,8 +1,9 @@
 module.exports = {
-  globals: {
-    'ts-jest': {
-      diagnostics: false,
-    }
+  coveragePathIgnorePatterns: ['<rootDir>/test'],
+  // testEnvironment: 'jsdom',
+  transformIgnorePatterns: ['node_modules', 'dist'],
+  transform: {
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
   },
   setupFilesAfterEnv: ['./jest.setup.ts'],
 };
