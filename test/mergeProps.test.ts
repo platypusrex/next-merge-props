@@ -201,8 +201,8 @@ describe('merge props', () => {
     const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
     const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
 
+    // @ts-ignore
     const getServerSideProps = mergeProps(
-      // @ts-ignore
       [getServerSidePropsOne, getServerSideNotFoundProps, getServerSidePropsTwo],
       {
         resolutionType: 'parallel',
