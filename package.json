@@ -20,7 +20,7 @@
   "module": "dist/esm/index.js",
   "typings": "dist/dts/index.d.ts",
   "files": [
-    "dist",
+    "dist/**/*",
     "src"
   ],
   "engines": {
@@ -42,7 +42,9 @@
     "lint:fix": "eslint '{src,test}/**.{ts,tsx,js,md}' --fix",
     "prepare": "husky install",
     "version": "changeset version",
-    "release": "pnpm run lint && changeset publish && git push --follow-tags"
+    "ci": "pnpm run lint && pnpm run check:types && pnpm run build",
+    "prerelease": "pnpm run ci",
+    "release": "pnpm run prerelease && changeset publish && git push --follow-tags"
   },
   "peerDependencies": {
     "next": ">=10.x"
