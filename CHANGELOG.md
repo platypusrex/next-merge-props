@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- b6e1cb7: Fixes current issue where the dist directory is missing the the published npm package.
+
 ## 1.1.0
 
 ### Minor Changes
