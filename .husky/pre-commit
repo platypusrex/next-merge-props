@@ -1,5 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-pnpm run lint:fix
-pnpm run test
+pnpm format & pnpm lint

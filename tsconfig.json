@@ -6,10 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,
@@ -23,15 +20,8 @@
     "strict": true,
     "target": "esnext",
     "declaration": true,
-    "declarationMap": true
+    "types": ["vitest/globals"]
   },
-  "exclude": [
-    "dist",
-    "node_modules",
-    "example"
-  ],
-  "include": [
-    "src/**/*",
-    "test/**/*"
-  ]
+  "exclude": ["dist", "node_modules", "example"],
+  "include": ["src/**/*", "test/**/*"]
 }

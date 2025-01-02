@@ -9,7 +9,6 @@ const colors = {
   orange: ['orange', 93],
 };
 
-/* eslint-disable @typescript-eslint/ban-types */
 export const {
   red,
   green,
@@ -19,11 +18,10 @@ export const {
   magenta,
   yellow,
   orange,
-}: Record<keyof typeof colors, Function> = Object.values(colors).reduce(
+}: Record<keyof typeof colors, (f: string) => string> = Object.values(colors).reduce(
   (cols, col) => ({
     ...cols,
     [col[0]]: (f: string) => `\x1b[${col[1]}m${f}\x1b[0m`,
   }),
-  {} as Record<keyof typeof colors, Function>
+  {} as Record<keyof typeof colors, (f: string) => string>
 );
-/* eslint-enable @typescript-eslint/ban-types */

@@ -8,10 +8,6 @@
     "emitDeclarationOnly": true,
     "composite": false
   },
-  "exclude": [
-    "dist/dts",
-    "tests",
-    "example"
-  ],
+  "exclude": ["dist", "tests", "next-example"],
   "include": ["src/**/*"]
 }
