@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- 4e7b6c3: - Migrates linting and formatting from eslint/prettier to biome.js.
+  - Migrates husky to v9 and modify existing git hooks.
+  - Migrates from swc to tsup for building/bundling.
+  - Migrates from tsc to tsup for generating declaration files.
+  - Migrates from jest to vitest.
+
+### Patch Changes
+
+- d3faf43: Updates the Next.js example application to the latest version (v15).
+
 ## 1.1.1
 
 ### Patch Changes
