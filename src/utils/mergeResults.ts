@@ -31,19 +31,22 @@ export const mergeResults = <P = AnyObject>(
     return { notFound: result.notFound };
   }
 
-  return (results as NextResultWithProps<P>[]).reduce((acc, curr) => {
-    if (debug && !isProd()) {
-      const intersection = shallowEqual(acc.props as any, curr.props as any);
-      if (intersection) logPropertyIntersection(intersection);
-    }
+  return (results as NextResultWithProps<P>[]).reduce(
+    (acc, curr) => {
+      if (debug && !isProd()) {
+        const intersection = shallowEqual(acc.props as any, curr.props as any);
+        if (intersection) logPropertyIntersection(intersection);
+      }
 
-    return {
-      ...acc,
-      props: {
-        ...acc.props,
-        ...curr.props,
-      },
-      ...(curr.revalidate ? { revalidate: curr.revalidate } : {}),
-    };
-  }, {} as NextResultWithProps<P>);
+      return {
+        ...acc,
+        props: {
+          ...acc.props,
+          ...curr.props,
+        },
+        ...(curr.revalidate ? { revalidate: curr.revalidate } : {}),
+      };
+    },
+    {} as NextResultWithProps<P>
+  );
 };

@@ -1,4 +1,5 @@
-import fetch from 'jest-fetch-mock';
+import createFetchMock from 'vitest-fetch-mock';
+import { vi } from 'vitest';
 import { orange } from '../src/utils';
 import { mergeProps } from '../src';
 import { AnyObject } from '../src/types';
@@ -13,9 +14,12 @@ import {
   sampleUserData,
 } from './utils';
 
+const fetch = createFetchMock(vi);
+fetch.enableMocks();
+
 describe('merge props', () => {
   beforeEach(() => {
-    (global as AnyObject).console = { warn: jest.fn() };
+    (global as AnyObject).console = { warn: vi.fn() };
     fetch.resetMocks();
   });
 
@@ -25,7 +29,7 @@ describe('merge props', () => {
 
   it('should merge object properties from random number of function args', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const getServerSideProps = mergeProps(
       getServerSideFooProps,
       getServerSideBarProps,
@@ -51,7 +55,7 @@ describe('merge props', () => {
 
   it('should merge object properties if first arg is an array of functions', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const getServerSideProps = mergeProps([
       getServerSideFooProps,
       getServerSideBarProps,
@@ -77,7 +81,7 @@ describe('merge props', () => {
 
   it('should merge object properties if resolution type is parallel', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const getServerSideProps = mergeProps(
       [
         getServerSideFooProps,
@@ -143,7 +147,7 @@ describe('merge props', () => {
   });
 
   it('should short circuit if redirect is returned', async () => {
-    const getServerSideTestProps = jest.fn(() => ({ props: {} }));
+    const getServerSideTestProps = vi.fn(() => ({ props: {} }));
 
     const getServerSideProps = mergeProps(getServerSideRedirectProps, getServerSideTestProps);
 
@@ -161,7 +165,7 @@ describe('merge props', () => {
   });
 
   it('should short circuit if notFound is returned', async () => {
-    const getServerSideTestProps = jest.fn(() => ({ props: {} }));
+    const getServerSideTestProps = vi.fn(() => ({ props: {} }));
 
     const getServerSideProps = mergeProps(getServerSideNotFoundProps, getServerSideTestProps);
 
@@ -176,8 +180,8 @@ describe('merge props', () => {
   });
 
   it('should respect the order of functions when short circuiting composed functions', async () => {
-    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
-    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsOne = vi.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = vi.fn(() => ({ props: {} }));
 
     const getServerSideProps = mergeProps(
       getServerSidePropsOne,
@@ -198,8 +202,8 @@ describe('merge props', () => {
   });
 
   it('should not short circuit if resolutionType is parallel', async () => {
-    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
-    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsOne = vi.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = vi.fn(() => ({ props: {} }));
 
     // @ts-ignore
     const getServerSideProps = mergeProps(
@@ -225,8 +229,8 @@ describe('merge props', () => {
   });
 
   it('should not warn if short circuit is not explicitly set and resolutionType is parallel', async () => {
-    const getServerSidePropsOne = jest.fn(() => ({ props: {} }));
-    const getServerSidePropsTwo = jest.fn(() => ({ props: {} }));
+    const getServerSidePropsOne = vi.fn(() => ({ props: {} }));
+    const getServerSidePropsTwo = vi.fn(() => ({ props: {} }));
 
     const getServerSideProps = mergeProps(
       [getServerSidePropsOne, getServerSideNotFoundProps, getServerSidePropsTwo],
@@ -268,7 +272,7 @@ describe('merge props', () => {
 
   it('should not warn of property intersections by default', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const getServerSideProps = mergeProps(
       getServerSideFooProps,
       getServerSideFooProps,
@@ -292,7 +296,7 @@ describe('merge props', () => {
 
   it('should warn of property intersections', async () => {
     fetch.mockResponseOnce(JSON.stringify(sampleUserData));
-    const onSuccess = jest.fn();
+    const onSuccess = vi.fn();
     const getServerSideProps = mergeProps(
       [
         getServerSideFooProps,

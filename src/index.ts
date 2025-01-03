@@ -24,7 +24,6 @@ export function mergeProps<P = AnyObject>(
 
   return async (ctx: Context): Promise<PropsResult<P>> => {
     const results: PropsResult<P>[] = await getResultsFromFnsList(ctx, fnsList, options);
-
     return mergeResults(results, options.debug);
   };
 }
