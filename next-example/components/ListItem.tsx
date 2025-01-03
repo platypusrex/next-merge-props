@@ -8,9 +8,7 @@ interface ListItemProps {
 
 const ListItem: React.FC<ListItemProps> = ({ data }) => (
   <Link href="/users/[id]" as={`/users/${data.id}`}>
-    <a>
-      {data.id}: {data.name}
-    </a>
+    {data.id}: {data.name}
   </Link>
 );
 

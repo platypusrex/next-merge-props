@@ -18,9 +18,7 @@ const AboutPage: NextPage<AboutPageProps> = (props) => (
       <pre>{JSON.stringify(props, null, 2) }</pre>
     </div>
     <p>
-      <Link href="/">
-        <a>Go home</a>
-      </Link>
+      <Link href="/">Go home</Link>
     </p>
   </Layout>
 );

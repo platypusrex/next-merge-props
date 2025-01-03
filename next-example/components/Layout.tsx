@@ -16,17 +16,9 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'This is the default 
     </Head>
     <header>
       <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/about">
-          <a>About</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/users">
-          <a>Users List</a>
-        </Link>{' '}
+        <Link href="/">Home</Link>{' '}|{' '}
+        <Link href="/about">About</Link>{' '}|{' '}
+        <Link href="/users">Users List</Link>{' '}
       </nav>
     </header>
     {children}

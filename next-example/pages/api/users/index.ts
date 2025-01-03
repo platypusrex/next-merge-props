@@ -16,7 +16,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
     const users = await data;
 
     res.status(200).json(users);
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ statusCode: 500, message: err.message });
   }
 }
